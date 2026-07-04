@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?يجب تحديد DB_PASSWORD في ملف .env}
+      POSTGRES_DB: nexora_mvp
+    volumes:
+      - nexora_pg_data:/var/lib/postgresql/data
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # ملاحظة: بدون ports مفتوحة للخارج عمدًا — قاعدة البيانات يجب ألا تكون متاحة من الإنترنت مباشرة.
+    # لو احتجت الوصول لها من جهازك للتشخيص، استخدم: docker compose exec postgres psql -U postgres
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD:?يجب تحديد DB_PASSWORD في ملف .env}
+      DB_NAME: nexora_mvp
+      JWT_SECRET: ${JWT_SECRET:?يجب تحديد JWT_SECRET في ملف .env}
+      JWT_EXPIRES_IN: 7d
+      NODE_ENV: production
+    # بدون ports مفتوحة للخارج — الوصول فقط عبر Caddy (/api) لتقليل سطح الهجوم.
+    # لو احتجت تشخيص مباشر، فعّل مؤقتًا: ports: ["3000:3000"]
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: /api
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      DOMAIN: ${DOMAIN:-:80}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  nexora_pg_data:
+  caddy_data:
+  caddy_config:
