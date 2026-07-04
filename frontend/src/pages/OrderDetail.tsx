@@ -188,16 +188,16 @@ export default function OrderDetail() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  card: { background: '#fff', padding: 20, borderRadius: 10, maxWidth: 500 },
+  card: { background: 'var(--color-card)', padding: 20, borderRadius: 10, maxWidth: 500 },
   actions: { marginTop: 16, display: 'flex', gap: 10, flexWrap: 'wrap' },
-  button: { padding: '10px 16px', borderRadius: 6, border: 'none', background: '#4f46e5', color: '#fff', cursor: 'pointer' },
-  secondaryBtn: { padding: '10px 16px', borderRadius: 6, border: '1px solid #4f46e5', background: '#fff', color: '#4f46e5', cursor: 'pointer' },
-  select: { padding: '8px 10px', borderRadius: 6, border: '1px solid #ddd' },
+  button: { padding: '10px 16px', borderRadius: 6, border: 'none', background: 'var(--color-primary)', color: '#fff', cursor: 'pointer' },
+  secondaryBtn: { padding: '10px 16px', borderRadius: 6, border: '1px solid var(--color-primary)', background: 'var(--color-card)', color: 'var(--color-primary)', cursor: 'pointer' },
+  select: { padding: '8px 10px', borderRadius: 6, border: '1px solid var(--color-border-strong)' },
   error: { color: '#dc2626', fontSize: 13, marginTop: 8 },
   linkButton: { padding: '10px 16px', borderRadius: 6, background: '#16a34a', color: '#fff', textDecoration: 'none', border: 'none', cursor: 'pointer', fontSize: 14 },
   trackBox: { display: 'flex', gap: 20, margin: '12px 0', padding: 12, background: '#f8f9fb', borderRadius: 8 },
   trackStep: { display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13 },
   stepDone: { color: '#16a34a', fontWeight: 600 },
-  stepPending: { color: '#999' },
-  stepTime: { color: '#999', fontSize: 11 },
+  stepPending: { color: 'var(--color-text-muted)' },
+  stepTime: { color: 'var(--color-text-muted)', fontSize: 11 },
 };

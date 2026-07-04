@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import Layout from './Layout';
 import { useLanguage } from '../context/LanguageContext';
+import { Link } from 'react-router-dom';
 
 interface Product {
   id: string;
@@ -93,7 +94,12 @@ export default function Products() {
 
   return (
     <Layout>
-      <h1>{t('products.title')}</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>{t('products.title')}</h1>
+        <Link to="/products/import" style={{ color: 'var(--color-primary)', fontSize: 14, textDecoration: 'none' }}>
+          📥 {t('import.button')}
+        </Link>
+      </div>
 
       <form onSubmit={addProduct} style={styles.form}>
         <input style={styles.input} placeholder={t('products.name')} value={name} onChange={(e) => setName(e.target.value)} required />
@@ -188,14 +194,14 @@ export default function Products() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  form: { display: 'flex', gap: 8, marginBottom: 12, background: '#fff', padding: 16, borderRadius: 10, flexWrap: 'wrap' },
-  input: { padding: '8px 10px', borderRadius: 6, border: '1px solid #ddd', flex: 1, minWidth: 140 },
-  button: { padding: '8px 16px', borderRadius: 6, border: 'none', background: '#4f46e5', color: '#fff', cursor: 'pointer' },
-  table: { width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: 10, overflow: 'hidden' },
-  th: { textAlign: 'start', padding: 12, background: '#f4f5f7', fontSize: 13, color: '#555' },
-  td: { padding: 12, borderTop: '1px solid #eee', fontSize: 14 },
-  smallBtn: { padding: '4px 10px', borderRadius: 6, border: '1px solid #ddd', background: '#fff', cursor: 'pointer', fontSize: 12 },
+  form: { display: 'flex', gap: 8, marginBottom: 12, background: 'var(--color-card)', padding: 16, borderRadius: 10, flexWrap: 'wrap' },
+  input: { padding: '8px 10px', borderRadius: 6, background: 'var(--color-card)', color: 'var(--color-text)', border: '1px solid var(--color-border-strong)', flex: 1, minWidth: 140 },
+  button: { padding: '8px 16px', borderRadius: 6, border: 'none', background: 'var(--color-primary)', color: '#fff', cursor: 'pointer' },
+  table: { width: '100%', borderCollapse: 'collapse', background: 'var(--color-card)', borderRadius: 10, overflow: 'hidden' },
+  th: { textAlign: 'start', padding: 12, background: 'var(--color-bg)', fontSize: 13, color: 'var(--color-text-muted)' },
+  td: { padding: 12, borderTop: '1px solid var(--color-border)', fontSize: 14 },
+  smallBtn: { padding: '4px 10px', borderRadius: 6, border: '1px solid var(--color-border-strong)', background: 'var(--color-card)', cursor: 'pointer', fontSize: 12 },
   error: { color: '#dc2626', fontSize: 13, marginBottom: 12 },
   modalOverlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 },
-  modal: { background: '#fff', padding: 24, borderRadius: 12, width: 480, maxWidth: '90vw' },
+  modal: { background: 'var(--color-card)', padding: 24, borderRadius: 12, width: 480, maxWidth: '90vw' },
 };

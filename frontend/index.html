@@ -6,7 +6,31 @@
     <title>Nexora OS - MVP</title>
     <style>
       * { box-sizing: border-box; }
-      body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: #f4f5f7; }
+      :root {
+        --color-bg: #f4f5f7;
+        --color-card: #ffffff;
+        --color-text: #111111;
+        --color-text-muted: #666666;
+        --color-border: #eeeeee;
+        --color-border-strong: #dddddd;
+        --color-primary: #4f46e5;
+      }
+      [data-theme="dark"] {
+        --color-bg: #0f1420;
+        --color-card: #1a2032;
+        --color-text: #e5e7eb;
+        --color-text-muted: #9ca3af;
+        --color-border: #2d3548;
+        --color-border-strong: #3a4358;
+        --color-primary: #6366f1;
+      }
+      body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        margin: 0;
+        background: var(--color-bg);
+        color: var(--color-text);
+        transition: background 0.2s, color 0.2s;
+      }
     </style>
   </head>
   <body>

@@ -228,15 +228,15 @@ export default function Orders() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  card: { background: '#fff', padding: 16, borderRadius: 10, marginBottom: 20, display: 'flex', flexDirection: 'column', gap: 10 },
-  input: { padding: '8px 10px', borderRadius: 6, border: '1px solid #ddd', flex: 1, width: '100%' },
-  label: { fontSize: 12, color: '#666', display: 'block', marginBottom: 4 },
-  button: { padding: '10px 16px', borderRadius: 6, border: 'none', background: '#4f46e5', color: '#fff', cursor: 'pointer', alignSelf: 'flex-start' },
-  secondaryBtn: { padding: '8px 14px', borderRadius: 6, border: '1px solid #4f46e5', background: '#fff', color: '#4f46e5', cursor: 'pointer' },
+  card: { background: 'var(--color-card)', padding: 16, borderRadius: 10, marginBottom: 20, display: 'flex', flexDirection: 'column', gap: 10 },
+  input: { padding: '8px 10px', borderRadius: 6, background: 'var(--color-card)', color: 'var(--color-text)', border: '1px solid var(--color-border-strong)', flex: 1, width: '100%' },
+  label: { fontSize: 12, color: 'var(--color-text-muted)', display: 'block', marginBottom: 4 },
+  button: { padding: '10px 16px', borderRadius: 6, border: 'none', background: 'var(--color-primary)', color: '#fff', cursor: 'pointer', alignSelf: 'flex-start' },
+  secondaryBtn: { padding: '8px 14px', borderRadius: 6, border: '1px solid var(--color-primary)', background: 'var(--color-card)', color: 'var(--color-primary)', cursor: 'pointer' },
   cartList: { margin: 0, paddingInlineStart: 20, fontSize: 14, color: '#444' },
   error: { color: '#dc2626', fontSize: 13 },
-  table: { width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: 10, overflow: 'hidden' },
-  th: { textAlign: 'start', padding: 12, background: '#f4f5f7', fontSize: 13, color: '#555' },
-  td: { padding: 12, borderTop: '1px solid #eee', fontSize: 14 },
-  link: { color: '#4f46e5', textDecoration: 'none', fontSize: 13 },
+  table: { width: '100%', borderCollapse: 'collapse', background: 'var(--color-card)', borderRadius: 10, overflow: 'hidden' },
+  th: { textAlign: 'start', padding: 12, background: 'var(--color-bg)', fontSize: 13, color: 'var(--color-text-muted)' },
+  td: { padding: 12, borderTop: '1px solid var(--color-border)', fontSize: 14 },
+  link: { color: 'var(--color-primary)', textDecoration: 'none', fontSize: 13 },
 };

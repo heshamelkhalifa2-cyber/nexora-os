@@ -73,7 +73,7 @@ export default function Staff() {
   return (
     <Layout>
       <h1>{t('staff.title')}</h1>
-      <p style={{ color: '#666', marginTop: -8 }}>{t('staff.subtitle')}</p>
+      <p style={{ color: 'var(--color-text-muted)', marginTop: -8 }}>{t('staff.subtitle')}</p>
 
       <form onSubmit={addStaff} style={styles.card}>
         <h3 style={{ marginTop: 0 }}>{t('staff.add')}</h3>
@@ -142,13 +142,13 @@ export default function Staff() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  card: { background: '#fff', padding: 16, borderRadius: 10, marginBottom: 20, marginTop: 16 },
+  card: { background: 'var(--color-card)', padding: 16, borderRadius: 10, marginBottom: 20, marginTop: 16 },
   row: { display: 'flex', gap: 8, flexWrap: 'wrap' },
-  input: { padding: '8px 10px', borderRadius: 6, border: '1px solid #ddd', flex: 1, minWidth: 160 },
-  button: { padding: '8px 16px', borderRadius: 6, border: 'none', background: '#4f46e5', color: '#fff', cursor: 'pointer' },
+  input: { padding: '8px 10px', borderRadius: 6, background: 'var(--color-card)', color: 'var(--color-text)', border: '1px solid var(--color-border-strong)', flex: 1, minWidth: 160 },
+  button: { padding: '8px 16px', borderRadius: 6, border: 'none', background: 'var(--color-primary)', color: '#fff', cursor: 'pointer' },
   error: { color: '#dc2626', fontSize: 13, marginTop: 10 },
   success: { color: '#16a34a', fontSize: 13, marginTop: 10 },
-  table: { width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: 10, overflow: 'hidden' },
-  th: { textAlign: 'start', padding: 12, background: '#f4f5f7', fontSize: 13, color: '#555' },
-  td: { padding: 12, borderTop: '1px solid #eee', fontSize: 14 },
+  table: { width: '100%', borderCollapse: 'collapse', background: 'var(--color-card)', borderRadius: 10, overflow: 'hidden' },
+  th: { textAlign: 'start', padding: 12, background: 'var(--color-bg)', fontSize: 13, color: 'var(--color-text-muted)' },
+  td: { padding: 12, borderTop: '1px solid var(--color-border)', fontSize: 14 },
 };
