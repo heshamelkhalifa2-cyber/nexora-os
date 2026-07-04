@@ -2,18 +2,22 @@ import 'dotenv/config';
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/all-exceptions.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule, { cors: true, bodyParser: false });
   app.enableCors({ origin: true, credentials: true });
+
+  app.use(json({ limit: '10mb' }));
+  app.use(urlencoded({ extended: true, limit: '10mb' }));
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // يتجاهل أي حقل غير معرّف بالـ DTO بدل رفضه بصمت
-      forbidNonWhitelisted: true, // يرفض الطلب صراحة لو فيه حقل غريب — أوضح للمطورين المستهلكين للـ API
-      transform: true, // يحوّل query params (strings) لأنواعها الصحيحة (numbers) تلقائيًا
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 
