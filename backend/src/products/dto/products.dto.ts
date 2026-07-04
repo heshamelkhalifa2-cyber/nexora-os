@@ -1,4 +1,16 @@
-import { IsInt, IsNumber, IsOptional, IsPositive, IsString, IsUUID, Min, MinLength } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsUUID,
+  Min,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateProductDto {
@@ -65,4 +77,34 @@ export class ListProductsQueryDto {
   @IsOptional()
   @IsString()
   search?: string;
+}
+
+export class BulkImportItemDto {
+  @IsString()
+  @MinLength(1)
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  name_en?: string;
+
+  @IsNumber({}, { message: 'السعر يجب أن يكون رقمًا' })
+  @IsPositive()
+  price: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  initial_stock?: number;
+}
+
+export class BulkImportDto {
+  @IsUUID('4', { message: 'لازم تحدد الموقع (warehouse_id) لاستيراد المخزون الابتدائي' })
+  warehouse_id: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => BulkImportItemDto)
+  items: BulkImportItemDto[];
 }

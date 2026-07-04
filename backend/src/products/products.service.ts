@@ -242,4 +242,85 @@ export class ProductsService {
       client.release();
     }
   }
+
+  async bulkImport(
+    tenantId: string,
+    createdByUserId: string,
+    warehouseId: string,
+    items: { name: string; name_en?: string; price: number; initial_stock?: number }[],
+  ) {
+    const client = await this.db.getClient();
+    let created = 0;
+    let updated = 0;
+    const errors: string[] = [];
+
+    try {
+      await client.query('BEGIN');
+
+      const warehouseCheck = await client.query(
+        'SELECT id FROM warehouses WHERE id = $1 AND tenant_id = $2',
+        [warehouseId, tenantId],
+      );
+      if (warehouseCheck.rowCount === 0) {
+        throw new BadRequestException('الموقع المحدد غير موجود');
+      }
+
+      for (const item of items) {
+        try {
+          const existing = await client.query(
+            'SELECT id FROM products WHERE tenant_id = $1 AND name = $2',
+            [tenantId, item.name],
+          );
+
+          let productId: string;
+
+          if (existing.rowCount && existing.rowCount > 0) {
+            productId = existing.rows[0].id;
+            await client.query(
+              `UPDATE products SET price = $1, name_en = COALESCE($2, name_en), updated_at = now() WHERE id = $3`,
+              [item.price, item.name_en || null, productId],
+            );
+            updated++;
+          } else {
+            const productRes = await client.query(
+              `INSERT INTO products (tenant_id, name, name_en, price) VALUES ($1, $2, $3, $4) RETURNING id`,
+              [tenantId, item.name, item.name_en || item.name, item.price],
+            );
+            productId = productRes.rows[0].id;
+            created++;
+          }
+
+          if (item.initial_stock && item.initial_stock > 0) {
+            const stockRes = await client.query(
+              `INSERT INTO product_stock (tenant_id, product_id, warehouse_id, quantity)
+               VALUES ($1, $2, $3, $4)
+               ON CONFLICT (product_id, warehouse_id)
+               DO UPDATE SET quantity = product_stock.quantity + $4, updated_at = now()
+               RETURNING quantity`,
+              [tenantId, productId, warehouseId, item.initial_stock],
+            );
+            await this.warehousesService.logLedgerEntry(client, {
+              tenantId,
+              productId,
+              warehouseId,
+              changeQuantity: item.initial_stock,
+              balanceAfter: stockRes.rows[0].quantity,
+              reason: 'adjustment',
+              createdBy: createdByUserId,
+            });
+          }
+        } catch (err: any) {
+          errors.push(`${item.name}: ${err.message || 'خطأ غير معروف'}`);
+        }
+      }
+
+      await client.query('COMMIT');
+      return { created, updated, errors };
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
 }

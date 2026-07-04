@@ -7,6 +7,7 @@ import { DeliveryModule } from './delivery/delivery.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { WarehousesModule } from './warehouses/warehouses.module';
 import { PrintingModule } from './printing/printing.module';
+import { SettingsModule } from './settings/settings.module';
 import { RequestLoggerMiddleware } from './common/request-logger.middleware';
 
 @Module({
@@ -19,6 +20,7 @@ import { RequestLoggerMiddleware } from './common/request-logger.middleware';
     DeliveryModule,
     InvoiceModule,
     PrintingModule,
+    SettingsModule,
   ],
 })
 export class AppModule implements NestModule {

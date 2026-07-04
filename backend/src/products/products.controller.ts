@@ -4,7 +4,13 @@ import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
 import { CurrentUser, AuthUser } from '../common/current-user.decorator';
-import { CreateProductDto, ListProductsQueryDto, TransferStockDto, UpdateStockDto } from './dto/products.dto';
+import {
+  BulkImportDto,
+  CreateProductDto,
+  ListProductsQueryDto,
+  TransferStockDto,
+  UpdateStockDto,
+} from './dto/products.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('products')
@@ -55,5 +61,12 @@ export class ProductsController {
       body.to_warehouse_id,
       body.quantity,
     );
+  }
+
+  // استيراد منتجات بالجملة (Excel/CSV) — التحليل يتم بالفرونت اند، هنا بس الإدراج/التحديث
+  @Roles('company_admin', 'super_admin', 'manager', 'warehouse_staff')
+  @Post('bulk-import')
+  bulkImport(@CurrentUser() user: AuthUser, @Body() body: BulkImportDto) {
+    return this.productsService.bulkImport(user.tenantId, user.sub, body.warehouse_id, body.items);
   }
 }
